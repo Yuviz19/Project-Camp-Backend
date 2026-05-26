@@ -1,0 +1,28 @@
+{
+  "name": "projectmanplat",
+  "version": "1.0.0",
+  "description": "a project management application for beginners",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "devel": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yuviz19/Project-Camp-Backend.git"
+  },
+  "keywords": [
+    "backend",
+    "API",
+    "creation"
+  ],
+  "author": "byteVoid",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yuviz19/Project-Camp-Backend/issues"
+  },
+  "homepage": "https://github.com/Yuviz19/Project-Camp-Backend#readme",
+  "devDependencies": {
+    "prettier": "3.8.3"
+  }
+}

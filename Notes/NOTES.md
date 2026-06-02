@@ -36,3 +36,14 @@
 - then u can make a config change for dotenv with
   - dotenv.config({path: ./.env});
 - then use the stuff with 'process.env.varname'
+
+5. Structuring the code-base
+- public - this directory lets keep the files that are to be served to the users
+- src - 
+  - controllers - writing the logics, and the functions
+  - db - a place to write the db connections and other db operations
+  - middleware - for tasks that are done in between
+  - models - stores the structure of the database
+  - routes - keeps the routing into
+  - utils - to keep the stuff that are reusable
+  - validators - to validate the data

@@ -65,9 +65,67 @@ eg.
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
-// get is used to get the data and store it to the database
+// get is used to retrieve the data
 // the get method takes in 2 parameters
 // 1. req - this is the data is the user is asking for
 // 2. res - the response that the server is sending back
 ```
 - also u need to make app.listen(port, ()=>{stuff to print in the terminal, maybe a run note})
+
+#### Structuring the code base 2.0
+- index.js is suppose to be the main entry point of the codebase
+- so writing express code there should not be a valid point
+- so make an app.js (in src) and 
+  - import express
+  - make an express app
+  - between these write the express config
+  - export default app
+
+## Express config and CORS error
+1. CORS {Cross Origin Resource Sharing} error - it is a security restriction enforced by web browsers when a frontend web application running on one origin attempts to request resources from a backend server on a different origin
+ - if the backend allows the transaction to be allowed, the frontend recieves the data.
+ - if not, browser does not allows the accessing of data
+ - hence giving a CORS error
+
+2. Express Config
+- we write middleware, which deal with the requests (not directly to the backend)
+```javascript
+app.use(express.json({ limit: "16kb" }));
+// Parses incoming JSON data and stores it in req.body.
+// Limits request body size to 16kb.
+
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+// Parses HTML form data (URL-encoded) and stores it in req.body.
+// Supports nested objects when extended is true.
+
+app.use(express.static("public"));
+// Serves static files (images, CSS, JS, PDFs, etc.)
+// from the public directory.
+```
+3. CORS config - another middleware, that is used to manange the cors functionalities
+```js
+// cors config
+app.use(cors({
+  origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:5173",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+```
+
+#### Purpose
+- Controls which frontend applications can access the backend.
+
+- Options
+  - origin - Allowed frontend origins.
+    - Reads from .env.
+    - Supports multiple origins using .split(",").
+    - Falls back to http://localhost:5173.
+  - credentials: true
+    - Allows cookies and authentication credentials.
+  - methods
+    - Allowed HTTP methods.
+  - allowedHeaders (contains the metadata of what stuff )
+    - Allowed request headers.
+     - Content-Type → JSON/form data.
+     - Authorization → JWT/Bearer tokens.

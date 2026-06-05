@@ -129,3 +129,75 @@ app.use(cors({
     - Allowed request headers.
      - Content-Type → JSON/form data.
      - Authorization → JWT/Bearer tokens.
+
+## API RESPONSE
+- whenever a client sends a request to the server
+- the server either sends a response or an error (something needs to be sent)
+- what we send to the client for a response
+  - a statusCode
+  - data
+  - message to be sent
+- what we send to the client for an error
+  - a statusCode
+  - data
+  - message
+
+- error is already managed by nodejs -> a specific class error exists, and we can overwrite the errors
+- while we are meant to design the response
+
+- Api Response
+```js
+class ApiResponse{
+  constructor(statusCode, data, message = "Success") {
+    this.statusCode = statusCode;
+    this.data = data;
+    this.message = message;
+    this.success = statusCode < 400; // statusCodes below 400 are generally treated as success
+  }
+}
+
+export { ApiResponse };
+```
+- Api Error
+```js
+class ApiError extends Error {
+  constructor(
+    statusCode,
+    message = "Something went wrong",
+    errors = [],
+    stack = "" // stack trace is given by error
+  ) {
+    super(message);
+    this.statusCode = statusCode;
+    this.data = null;
+    this.message = message;
+    this.success = false;
+    this.errors = errors;
+    if (stack) {
+      this.stack = stack;
+    } else {
+      Error.captureStackTrace(this,this.constructor);
+    }
+  }
+}
+
+export { ApiError };
+```
+- these are important, so that the resonses follow a standard format
+
+#### API Response- 
+- a custom class
+  - stattusCode - http status code
+  - data - the actual response data
+  - message - human readable
+  - success - indicates success/faliure
+
+#### API Error
+- a class that is extended from an inbuilt class
+  - statusCode - http error code 
+  - message - error description 
+  - errors - detailed error list
+  - success - always fail
+  - data - usually null
+- Error.captureStackTrace(this, this.constructor);
+  - captures the location where the error was thrown

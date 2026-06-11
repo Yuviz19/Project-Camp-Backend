@@ -3,8 +3,9 @@
   - take some data
   - validate the data 
   - Check in DB if the user already exists
-  - SAVE tha new user 
+  - SAVE tha new user (Access Token, Refresh Token, Genaral Token and Sending mail)
   - verify the user via an email service
+  - send response back to request 
 
 ## Email Generation
 

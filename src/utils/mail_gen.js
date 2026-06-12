@@ -7,7 +7,8 @@ const sendMail = async (options) => {
   const mailgenerator = new Mailgen({
     theme: 'salted',
     product: {
-      name: 'BaseCamp'
+      name: 'BaseCamp',
+      link: 'https://BaseCamp.com'
     }
   });
 

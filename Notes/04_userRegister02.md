@@ -167,3 +167,25 @@ if (!createdUser) {
 ```
 - ensures that the user was successfully fetched
 9. Send Response Back
+
+## Wrting Routers to user-auth
+- we have written the controller for auth
+- now we write the route
+```js
+import { Router } from "express";
+import { registerUser } from "../controllers/auth.controllers.js";
+
+const router = Router();
+router.route("/register").post(registerUser)
+
+export default router;
+```
+- and then use app.js for direction
+```js
+import authRouter from "./routes/auth.routes.js"
+app.use("/api/v1/auth", authRouter);
+```
+- to test this with postman/insomnia
+1. go to the api route
+2. then pass the arguments in the body section as an object, with each entry as a string
+3. and hit send

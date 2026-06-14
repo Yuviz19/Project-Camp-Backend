@@ -15,6 +15,7 @@ const generateAccessRefreshToken = async (userId) => {
     await user.save({ validateBeforeSave: false });
     return { accessToken, refreshToken };
   } catch (error) {
+    console.error("JWT ERROR:", error);
     throw new ApiError(509, "Something went wrong while generating JWTs")
   }
 }
@@ -87,7 +88,7 @@ const login = asyncHandler(async (req, res) => {
     throw new ApiError(400, "User does not exists!");
   }
 
-  const isPassValid = await user.isPasswordCorrect();
+  const isPassValid = await user.isPasswordCorrect(password);
   if (!isPassValid) {
     throw new ApiError(400, "Password is not correct! Try again.")
   }

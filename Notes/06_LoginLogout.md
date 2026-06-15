@@ -153,3 +153,9 @@ req.user = user
   - gives access to req.cookies()
 3. Express JSON Middleware
   - this gives access to req.body()
+
+
+## Logging a User out
+- the client sends a request to the server to log them out
+- and the access token is sent and auth middleware is run
+- writing the logout logic in the auth.controller

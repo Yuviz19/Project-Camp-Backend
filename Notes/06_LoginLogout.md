@@ -146,7 +146,7 @@ Find user in DB
       ↓
 req.user = user
 
-## A common pattern in Express
+### A common pattern in Express
 1. Multer
   - gives access to req.file()
 2. CookieParser
@@ -159,3 +159,40 @@ req.user = user
 - the client sends a request to the server to log them out
 - and the access token is sent and auth middleware is run
 - writing the logout logic in the auth.controller
+
+> [!NOTE]
+> the 'new: true' option is deprecated (or will be)
+> use 'returnDocument: "after"', to get the document after the making the edit
+> u can also write "before" to get the document, before the edit
+> this is based on the mongoose driver terminology.
+
+```js
+const logout = asyncHandler(async (req, res) => {
+  // this work because of the jwtverify middleware
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        refreshToken: "",
+      },
+    },
+    // this lines helps in returning the updated object and not the old one
+    {
+      new: true
+    }
+  )
+  
+  const options = {
+    httpOnly: true,
+    secure: true
+  }
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(
+      new ApiResponse(200, {}, "User Logged Out Successfully")
+    )
+})
+```

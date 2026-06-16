@@ -266,6 +266,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       secure: true
     }
 
+    // we generate a new access and refresh token everytime
+    // this is called refresh token refresh token rotation
     const { accessToken, refreshToken: newRefreshToken } = await generateAccessRefreshToken(user._id);
 
     user.refreshToken = newRefreshToken;

@@ -4,6 +4,7 @@ import nodemailer from "nodemailer";
 // things required for options object
 // mailGenContent, email, subject
 const sendMail = async (options) => {
+  // mail config
   const mailgenerator = new Mailgen({
     theme: 'salted',
     product: {
@@ -12,9 +13,11 @@ const sendMail = async (options) => {
     }
   });
 
+  // types formats of mail -> takes the mailGenContent from the controllers and converts the data to different formats
   const mailPlainText = mailgenerator.generatePlaintext(options.mailGenContent);
   const mailHtml = mailgenerator.generate(options.mailGenContent);
 
+  // nodemailer config
   const transporter = nodemailer.createTransport({
     host: process.env.MAILTRAP_SMTP_HOST,
     port: process.env.MAILTRAP_SMTP_PORT,
@@ -24,6 +27,7 @@ const sendMail = async (options) => {
     }
   });
 
+  // the main config
   const mail = {
     from: "mail.basecamp@test.com",
     to: options.email,

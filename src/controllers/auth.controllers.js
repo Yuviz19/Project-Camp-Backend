@@ -4,6 +4,7 @@ import { ApiError } from "../utils/api-error.js";
 import { asyncHandler } from "../utils/aync-handler.js";
 import { emailVerificationMailContent, forgotPasswordMailContent, sendMail } from "../utils/mail_gen.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 const generateAccessRefreshToken = async (userId) => {
   try {
@@ -306,11 +307,11 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User with the email does not exists");
   }
 
-  const { unHashedToken, hashedToken, tokenExpiry } = user.generateTemporaryToken;
+  const { unHashedToken, hashedToken, tokenExpiry } = user.generateTemporaryToken();
 
   user.forgotPasswordToken = hashedToken;
   user.forgotPasswordExpiry = tokenExpiry;
-  user.save({ validateBeforeSave: false });
+  await user.save({ validateBeforeSave: false });
 
   await sendMail({
     email: user?.email,

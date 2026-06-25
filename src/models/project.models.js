@@ -7,7 +7,7 @@ const projectSchema = new Schema({
     unique: true,
     trim: true
   },
-  discription: {
+  description: {
     type: String
   },
   createdBy: {

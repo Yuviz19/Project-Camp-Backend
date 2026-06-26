@@ -1,9 +1,11 @@
 import { User } from "../models/user.models.js";
+import { ProjectMember } from "../models/projectMember.models.js";
 import { ApiError } from "../utils/api-error.js";
 import { asyncHandler } from "../utils/aync-handler.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
-export const verifyJWT = asyncHandler(async(req, res, next) => {
+export const verifyJWT = asyncHandler(async (req, res, next) => {
   // we get an encoded token
   const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
 
@@ -30,4 +32,34 @@ export const verifyJWT = asyncHandler(async(req, res, next) => {
     console.error("Error while JWT verification: ", err);
     throw new ApiError(401, "Invalid Access Token");
   }
-})
+});
+
+// asking what users can do the stuff
+export const validateProjectPermission = (role = []) => {
+  return asyncHandler(async (req, res, next) => {
+    const { projectId } = req.params;
+    if (!projectId) {
+      throw new ApiError(404, "Project Id is missing")
+    }
+
+    const project = await ProjectMember.findOne({
+      project: new mongoose.Types.ObjectId(projectId),
+      user: new mongoose.Types.ObjectId(req.user._id)
+    })
+
+    if (!project) {
+      throw new ApiError(404, "Project not found")
+    }
+
+    const givenRole = project?.role;
+    req.user.role = givenRole;
+
+    // if the roles match the specificified roles. we allow them
+    if (!role.includes(givenRole)) {
+      throw new ApiError(403, "You do not have permission to perform this action")
+    }
+
+    // move to the next step (another middleware or conroller)
+    next()
+  });
+};

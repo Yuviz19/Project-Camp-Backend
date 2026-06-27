@@ -192,20 +192,20 @@ const createTask = asyncHandler(async (req, res) => {
 
 const updateTask = asyncHandler(async (req, res) => {
   const { projectId, taskId } = req.params;
-  const { newTitle, newDescription, newStatus, assignedTo } = req.body;
+  const { title, description, status, assignedTo } = req.body;
 
   const updateFields = {};
 
-  if (newTitle) {
-    updateFields.title = newTitle;
+  if (title) {
+    updateFields.title = title;
   }
 
-  if (newDescription) {
-    updateFields.description = newDescription;
+  if (description) {
+    updateFields.description = description;
   }
 
-  if (newStatus) {
-    updateFields.status = newStatus;
+  if (status) {
+    updateFields.status = status;
   }
 
   const files = req.files || [];

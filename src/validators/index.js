@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { AvailableUserRoles } from "../utils/constants.js";
+import { AvailableUserRoles, AvailableTaskStatus } from "../utils/constants.js";
 
 const userRegisterValidator = () => {
   return [
@@ -126,6 +126,79 @@ const updateUserRoleValidator = () => {
   ]
 }
 
+const createTaskValidator = () => {
+  return [
+    body("title")
+      .trim()
+      .notEmpty()
+      .withMessage("Title should not be empty"),
+    body("description")
+      .trim()
+      .notEmpty()
+      .withMessage("Description should not be empty"),
+    body("assignedTo")
+      .trim()
+      .notEmpty()
+      .withMessage("please provide the id of person to assign to")
+      .isMongoId()
+      .withMessage("not a valid id"),
+    body("status")
+      .optional()
+      .trim()
+      .isIn(AvailableTaskStatus)
+      .withMessage("provided status is not valid")
+  ]
+}
+
+const updateTaskValidator = () => {
+  return [
+    body("title")
+      .optional()
+      .trim(),
+    body("description")
+      .optional()
+      .trim(),
+    body("assignedTo")
+      .optional()
+      .trim()
+      .isMongoId()
+      .withMessage("not a valid id"),
+    body("status")
+      .optional()
+      .trim()
+      .isIn(AvailableTaskStatus)
+      .withMessage("provided status is not valid")
+  ]
+}
+
+const createSubTaskValidator = () => {
+  return [
+    body("title")
+      .trim()
+      .notEmpty()
+      .withMessage("Title should not be empty"),
+    body("description")
+      .trim()
+      .notEmpty()
+      .withMessage("Description is required")
+  ]
+}
+
+const updateSubTaskValidator = () => {
+  return [
+    body("title")
+      .optional()
+      .trim(),
+    body("description")
+      .optional()
+      .trim(),
+    body("isCompleted")
+      .optional()
+      .isBoolean()
+      .withMessage("This field should be a boolean")
+  ]
+}
+
 export {
   userRegisterValidator,
   userLoginValidator,
@@ -135,5 +208,9 @@ export {
   createProjectValidator,
   updateProjectValidator,
   addMembersToProjectValidator,
-  updateUserRoleValidator
+  updateUserRoleValidator,
+  createTaskValidator,
+  updateTaskValidator,
+  createSubTaskValidator,
+  updateSubTaskValidator
 };

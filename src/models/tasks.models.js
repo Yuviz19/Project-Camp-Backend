@@ -22,6 +22,7 @@ const taskSchema = new Schema({
     ref: "User"
   },
   status: {
+    filename: String,
     type: String,
     enum: AvailableTaskStatus,
     default: TaskStatusEnum.TODO

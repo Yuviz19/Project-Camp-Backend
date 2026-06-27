@@ -227,8 +227,6 @@ Represents smaller units of work belonging to a task.
 
 ## Future Improvements
 
-## Future Improvements
-
 * Store attachments using cloud storage (AWS S3/Cloudinary) instead of the local filesystem.
 * Add pagination and filtering for projects, tasks, and notes.
 * Introduce automated testing for API endpoints.

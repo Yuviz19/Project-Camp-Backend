@@ -1,6 +1,7 @@
 import { body } from "express-validator";
 import { AvailableUserRoles, AvailableTaskStatus } from "../utils/constants.js";
 
+// ---- user
 const userRegisterValidator = () => {
   return [
     body("email")
@@ -76,6 +77,7 @@ const userResetForgotPasswordValidator = () => {
   ]
 }
 
+// ---- project
 const createProjectValidator = () => {
   return [
     body("name")
@@ -126,6 +128,7 @@ const updateUserRoleValidator = () => {
   ]
 }
 
+// ---- task
 const createTaskValidator = () => {
   return [
     body("title")
